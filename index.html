@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkyFly - Flight Reservation</title>
+
+  <style>
+    /* ---------- Global Styles ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #007bff, #00d4ff);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ---------- Background Animation ---------- */
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: moveClouds 60s linear infinite;
+    }
+
+    .cloud:nth-child(1) { width: 200px; height: 60px; top: 20%; left: -200px; animation-delay: 0s; }
+    .cloud:nth-child(2) { width: 150px; height: 50px; top: 50%; left: -150px; animation-delay: 10s; }
+    .cloud:nth-child(3) { width: 180px; height: 55px; top: 70%; left: -180px; animation-delay: 20s; }
+
+    @keyframes moveClouds {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(120vw); }
+    }
+
+    /* ---------- Container ---------- */
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      animation: slideUp 1s ease forwards;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #007bff;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px #007bff;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background: #e6f7ff;
+      border-radius: 10px;
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Animated Clouds -->
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+  <div class="cloud"></div>
+
+  <!-- Booking Form -->
+  <div class="container">
+    <h2>✈️ SkyFly Reservation</h2>
+
+    <form id="flightForm">
+      <label>From</label>
+      <input type="text" id="from" placeholder="Enter departure city" required>
+
+      <label>To</label>
+      <input type="text" id="to" placeholder="Enter destination city" required>
+
+      <label>Date of Journey</label>
+      <input type="date" id="date" required>
+
+      <label>Passengers</label>
+      <select id="passengers" required>
+        <option value="">Select</option>
+        <option>1 Adult</option>
+        <option>2 Adults</option>
+        <option>3 Adults</option>
+        <option>4 Adults</option>
+      </select>
+
+      <button type="submit">Search Flights</button>
+    </form>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("flightForm");
+    const resultBox = document.getElementById("result");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const date = document.getElementById("date").value;
+      const passengers = document.getElementById("passengers").value;
+
+      if (!from || !to || !date || !passengers) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <h3>Flight Search Summary</h3>
+        <p><strong>From:</strong> ${from}</p>
+        <p><strong>To:</strong> ${to}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Passengers:</strong> ${passengers}</p>
+        <p style="color:#007bff; font-weight:bold;">✅ Available flights found! Proceed to booking.</p>
+      `;
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
